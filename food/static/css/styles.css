@@ -9,10 +9,9 @@ body {
     font-weight: 800;
 }
 
-/* .title-container {
-    width: 95%;
-    height: 500px;
-} */
+footer {
+    margin: auto;
+}
 
 .link-light:hover {
     color: #ffc107 !important;

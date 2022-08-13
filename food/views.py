@@ -89,3 +89,9 @@ def recipe_detail_view(request, recipe_id):
     }
     
     return render(request, "recipe_detail.html", context)
+
+# DELETE RECIPE
+def recipe_delete(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    recipe.delete()
+    return redirect("home")
