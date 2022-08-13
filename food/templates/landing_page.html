@@ -1,6 +1,55 @@
-{% extends 'base.html' %}
-
+{% load static %}
 <!-- start -->
 {% block content %}
+<!-- Hero -->
+<section class="bg-warning">
+    <div class="container w-75 pt-5 pb-5 d-flex justify-content-between align-items-center">
+        <div class="title-container d-flex flex-column justify-content-center align-items-start me-5">
+            <h1 class="header">It's all about good<br><span class="text-light">food</span> & taste</h1>
+            <button type="button" class="btn btn-dark fs-5 mt-3">See all <i class="fa-solid fa-angle-right mx-2 fs-6"></i></button>
+        </div>
+    
+        <div>
+            <img src="{% static '/images/meal-bg.png' %}" alt="a plate of food">
+        </div>
+    </div>
+</section>
+<!-- handpicked recipes -->
+<section class="pb-5">
+    <!-- container -->
+    <div class="container w-75 pt-5 pb-5">
+        <h2 class="fs-2 fw-semibold mb-5 mt-5 pb-1">Editor's Picks</h2>
+        <!-- flexbox row 3 -->
+        <div class="d-flex justify-content-start">
+            {% for recipe in recipes %}
+            <!-- recipe card -->
+            <div class="card mx-4" style="width: 20rem;">
+                <center style="background-color: rgb(247, 247, 247);">
+                    <img src="{{ recipe.image.url }}" class="card-img-top w-100" alt="recipe image">
+                </center>
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        {% if recipe.difficulty == "Easy" %}
+                        <p><span class="badge text-bg-success fs-6">{{ recipe.difficulty }}</span></p>
+                        {% elif recipe.difficulty == "Medium" %}
+                        <p><span class="badge text-bg-warning fs-6">{{ recipe.difficulty }}</span></p>
+                        {% elif recipe.difficulty == "Difficult" %}
+                        <p><span class="badge text-bg-danger fs-6">{{ recipe.difficulty }}</span></p>
+                        {% else %}
+                        null
+                        {% endif %}
+                        <p class="text-muted"><i class="fa-solid fa-clock me-2"></i>{{ recipe.duration }}</p>
+                    </div>
+                    <h5 class="card-title fw-semibold fs-4">{{ recipe.name }}</h5>
+                    <p class="card-text">{{ recipe.description }}</p>
+                    <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning align-left float-end fw-semibold">Read more <i class="fa-solid fa-angle-right mx-2"></i></a>
+                </div>
+            </div>
+            <!-- end of recipe card -->
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
 {% endblock content %}

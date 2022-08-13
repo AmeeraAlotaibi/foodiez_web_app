@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from .forms import RegisterForm, LoginForm
+
+from .models import Recipe
+from .forms import RecipeForm, RegisterForm, LoginForm
 
 
 # Create your views here.
@@ -51,4 +53,39 @@ def logout_view(request):
 # home page view 
 # add context later for all models
 def home_view(request):
-    return render(request, "landing_page.html")
+    recipes = Recipe.objects.all()
+    form = LoginForm()
+    register = RegisterForm()
+    context = {
+        "form": form,
+        "register": register,
+        "recipes": recipes,
+    }
+
+    return render(request, "base.html", context)
+
+
+# CREATING A RECIPE VIEW
+def create_recipe_view(request):
+    form = RecipeForm()
+    if request.method == "POST":
+        form = RecipeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    
+    context = {
+        "form": form,
+    }
+    
+    return render(request, "create_recipe.html", context)
+
+
+# RECIPE DETAIL VIEW
+def recipe_detail_view(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    context = {
+        "recipe": recipe,
+    }
+    
+    return render(request, "recipe_detail.html", context)

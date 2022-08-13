@@ -1,0 +1,29 @@
+body {
+    height: 100vh;
+    font-family: 'inter', sans-serif;
+}
+
+.header {
+    font-size: 4em;
+    font-family: 'inter', sans-serif;
+    font-weight: 800;
+}
+
+/* .title-container {
+    width: 95%;
+    height: 500px;
+} */
+
+.link-light:hover {
+    color: #ffc107 !important;
+    text-decoration-line: none !important;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important; 
+}
+
+.footer-text {
+    color: rgb(142, 142, 142);
+}
+

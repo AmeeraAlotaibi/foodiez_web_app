@@ -1,10 +1,27 @@
-{% extends 'base.html' %}
 {% load crispy_forms_tags %}
-<!-- start -->
-{% block content %}
-<form action="{% url 'register' %}" method="post">
-    {% csrf_token %}
-    {{form | crispy}}
-    <input type="submit" value="Login">
-</form>
-{% endblock content %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+<div class="modal fade" id="register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{% url 'register' %}" method="post" class="form">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="registerLabel">Register a new account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Register using a unique username and a strong password!
+                    </p>
+                    {% bootstrap_form form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-warning" value="register">Register</button>
+                </div>
+            </div>
+        </form>
+    </div> 
+</div>
