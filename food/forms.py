@@ -1,7 +1,7 @@
 from socket import fromshare
 from django import forms 
 from django.contrib.auth import get_user_model
-from .models import Recipe
+from .models import Category, Recipe
 
 
 User = get_user_model()
@@ -26,3 +26,9 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         exclude = ['created_by']
+        
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'

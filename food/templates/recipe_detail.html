@@ -14,7 +14,7 @@
                     <p><span class="badge text-bg-success fs-6">{{ recipe.difficulty }}</span></p>
                 {% elif recipe.difficulty == "Medium" %}
                     <p><span class="badge text-bg-warning fs-6">{{ recipe.difficulty }}</span></p>
-                {% elif recipe.difficulty == "Difficult" %}
+                {% elif recipe.difficulty == "Hard" %}
                     <p><span class="badge text-bg-danger fs-6">{{ recipe.difficulty }}</span></p>
                 {% else %}
                     null
@@ -70,7 +70,7 @@
         <div class="w-25 py-5 px-4 bg-light text-dark">
             {% if request.user == recipe.created_by %}
             <div class="mb-5 d-flex justify-content-end">
-                <a href=""><i class="fa-solid fa-pen text-primary fs-5 me-3"></i></a>
+                <a href="{% url 'update-recipe' recipe_id=recipe.id %}"><i class="fa-solid fa-pen text-primary fs-5 me-3"></i></a>
                 <!-- modal link -->
                 <a href="" data-bs-toggle="modal" data-bs-target="#deleteModal"> <i class="fa-solid fa-trash text-danger fs-5"></i></a>
                         <!-- Modal -->

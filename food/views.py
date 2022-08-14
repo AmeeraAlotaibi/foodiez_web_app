@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-
-from .models import Recipe
-from .forms import RecipeForm, RegisterForm, LoginForm
+from django.contrib.auth.decorators import login_required
+from .models import Category, Recipe
+from .forms import CategoryForm, RecipeForm, RegisterForm, LoginForm
 
 
 # Create your views here.
@@ -16,6 +16,7 @@ def register_view(request):
             user.set_password(user.password)
             user.save()
             login(request, user)
+            print("REGISTERED-----------------------------")
             return redirect("home")
     context = {
         "form": form,
@@ -53,13 +54,17 @@ def logout_view(request):
 # home page view 
 # add context later for all models
 def home_view(request):
-    recipes = Recipe.objects.all()
     form = LoginForm()
     register = RegisterForm()
+    recipes = Recipe.objects.all()
+    categories = Category.objects.all()
+    category_form = CategoryForm()
     context = {
         "form": form,
         "register": register,
         "recipes": recipes,
+        "categories": categories,
+        "category_form": category_form  
     }
 
     return render(request, "base.html", context)
@@ -68,10 +73,13 @@ def home_view(request):
 # CREATING A RECIPE VIEW
 def create_recipe_view(request):
     form = RecipeForm()
-    if request.method == "POST":
+    
+    if request.method == "POST" and request.user.is_athenticated:
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            recipe = form.save(commit=False)
+            recipe.created_by = request.user
+            recipe.save()
             return redirect("home")
     
     context = {
@@ -95,3 +103,48 @@ def recipe_delete(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     recipe.delete()
     return redirect("home")
+
+
+# UPDATE RECIPE INFO
+def recipe_update(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    form = RecipeForm(instance=recipe)
+    if request.method == "POST":
+        form = RecipeForm(request.POST, request.FILES, instance=recipe)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    context = {
+        "recipe": recipe,
+        "form": form,
+    }
+    return render(request, 'update_recipe.html', context)
+
+
+# CREATE NEW CATEGORY HERE LOGGIN IN REQUIRED
+
+def create_category(request):
+    form = CategoryForm()
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    context = {
+        "form": form,
+    }
+    return render(request, 'add_cat.html', context)
+
+
+
+# USER FORBIDDEN PAGE
+def forbidden_view(request):
+    form = LoginForm()
+    register = RegisterForm()
+    
+    context = {
+        "form": form,
+        "register": register,
+    }
+    
+    return render(request, 'forbidden.html', context)

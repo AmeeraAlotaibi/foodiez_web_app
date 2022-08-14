@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from food.views import create_recipe_view, home_view, login_view, logout_view, recipe_detail_view, register_view, recipe_delete
+from food.views import create_category, create_recipe_view, forbidden_view, home_view, login_view, logout_view, recipe_detail_view, recipe_update, register_view, recipe_delete, forbidden_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,10 +26,15 @@ urlpatterns = [
     path("create-recipe/", create_recipe_view ,name="create-recipe"),
     path("recipe/<int:recipe_id>/", recipe_detail_view ,name="recipe-detail"),
     path("delete/<int:recipe_id>/", recipe_delete ,name="delete-recipe"),
+    path("update/<int:recipe_id>/", recipe_update ,name="update-recipe"),
+    path("create-category/", create_category ,name="create-category"),
     # USER AUTHENTICATION
     path("register/", register_view, name="register"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
+    
+    # if the user tries to create without loggin in
+    path("forbidden/", forbidden_view, name="forbidden"),
 ]
 
 
