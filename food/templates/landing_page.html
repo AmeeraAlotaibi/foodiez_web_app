@@ -4,9 +4,9 @@
 <!-- Hero -->
 <section class="bg-warning">
     <div class="container w-75 pt-5 pb-5 d-flex justify-content-between align-items-center">
-        <div class="title-container d-flex flex-column justify-content-center align-items-start me-5">
+        <div class="title-container d-flex flex-column justify-content-center align-items-start ">
             <h1 class="header">It's all about good<br><span class="text-light">food</span> & taste</h1>
-            <button type="button" class="btn btn-dark fs-5 mt-3 px-5">See all <i class="fa-solid fa-angle-right mx-2 fs-6"></i></button>
+            <a href="#all-recipes" type="button" class="btn btn-dark fs-5 mt-3 px-5">See all <i class="fa-solid fa-angle-right mx-2 fs-6"></i></a>
         </div>
     
         <div>
@@ -43,7 +43,12 @@
                     </div>
                     <h5 class="card-title fw-semibold fs-4">{{ recipe.name }}</h5>
                     <p class="card-text">{{ recipe.description }}</p>
-                    <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning align-left float-end fw-semibold">Read more <i class="fa-solid fa-angle-right mx-2"></i></a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- category -->
+                        <span class="badge text-bg-dark px-3 py-2">{{ recipe.category }}</span>
+                        <!-- read more button -->
+                        <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning fw-semibold">Read more <i class="fa-solid fa-angle-right mx-1"></i></a>
+                    </div>
                 </div>
             </div>
             <!-- end of recipe card -->
@@ -70,13 +75,14 @@
 </section>
 
 <section>
-    <div class="container w-75 pb-5">
+    <div class="container w-75 pb-5" id="all-recipes">
         <h2 class="fs-2 fw-semibold mb-4 mt-5 pb-1">All Recipes</h2>
         
         <div class="d-flex">
             <!-- filter sidebar container -->
             <div class="w-25">
                 <h6 class="fw-bold fs-5">Filter by: </h6>
+                
             </div>
             
             <!-- recipes container -->
@@ -103,7 +109,13 @@
                     </div>
                     <h5 class="card-title fw-semibold fs-5">{{ recipe.name }}</h5>
                     <p class="card-text fs-6">{{ recipe.description }}</p>
-                    <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning align-left float-end fw-semibold">Read more <i class="fa-solid fa-angle-right mx-2"></i></a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- category -->
+                        <span class="badge text-bg-dark px-3 py-2">{{ recipe.category }}</span>
+                        <!-- read more button -->
+                        <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning fw-semibold">Read more <i class="fa-solid fa-angle-right mx-1"></i></a>
+                    </div>
+                    
                 </div>
             </div>
             <!-- end of recipe card -->
