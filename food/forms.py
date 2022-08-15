@@ -25,7 +25,7 @@ class LoginForm(forms.Form):
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        exclude = ['created_by']
+        exclude = ['created_by', 'editor_pick']
         
 
 class CategoryForm(forms.ModelForm):

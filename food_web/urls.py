@@ -17,17 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from food.views import create_category, create_recipe_view, forbidden_view, home_view, login_view, logout_view, recipe_detail_view, recipe_update, register_view, recipe_delete, forbidden_view
+from food.views import create_category, create_recipe_view, delete_category, forbidden_view, home_view, login_view, logout_view, recipe_detail_view, recipe_update, register_view, recipe_delete, forbidden_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     # LANDING PAGE HOME 
     path("", home_view, name="home"),
-    path("create-recipe/", create_recipe_view ,name="create-recipe"),
-    path("recipe/<int:recipe_id>/", recipe_detail_view ,name="recipe-detail"),
-    path("delete/<int:recipe_id>/", recipe_delete ,name="delete-recipe"),
-    path("update/<int:recipe_id>/", recipe_update ,name="update-recipe"),
-    path("create-category/", create_category ,name="create-category"),
+    path("create-recipe/", create_recipe_view, name="create-recipe"),
+    path("recipe/<int:recipe_id>/", recipe_detail_view, name="recipe-detail"),
+    path("delete/<int:recipe_id>/", recipe_delete, name="delete-recipe"),
+    path("update/<int:recipe_id>/", recipe_update, name="update-recipe"),
+    path("create-category/", create_category, name="create-category"),
+    path("delete/<int:cat_id>", delete_category, name="delete-category"),
     # USER AUTHENTICATION
     path("register/", register_view, name="register"),
     path("login/", login_view, name="login"),

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Category, Recipe
 from .forms import CategoryForm, RecipeForm, RegisterForm, LoginForm
 
@@ -16,7 +16,7 @@ def register_view(request):
             user.set_password(user.password)
             user.save()
             login(request, user)
-            print("REGISTERED-----------------------------")
+            messages.success(f"Account created for {user}")
             return redirect("home")
     context = {
         "form": form,
@@ -57,6 +57,7 @@ def home_view(request):
     form = LoginForm()
     register = RegisterForm()
     recipes = Recipe.objects.all()
+    editors_pick = Recipe.objects.filter(editor_pick=True)
     categories = Category.objects.all()
     category_form = CategoryForm()
     context = {
@@ -64,23 +65,42 @@ def home_view(request):
         "register": register,
         "recipes": recipes,
         "categories": categories,
-        "category_form": category_form  
+        "category_form": category_form ,
+        "editors_pick": editors_pick,
     }
 
     return render(request, "base.html", context)
+
+
+# USER FORBIDDEN PAGE
+def forbidden_view(request):
+    form = LoginForm()
+    register = RegisterForm()
+    
+    context = {
+        "form": form,
+        "register": register,
+    }
+    
+    return render(request, 'forbidden.html', context)
+
 
 
 # CREATING A RECIPE VIEW
 def create_recipe_view(request):
     form = RecipeForm()
     
-    if request.method == "POST" and request.user.is_athenticated:
+    if request.method == "POST":
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
             recipe = form.save(commit=False)
-            recipe.created_by = request.user
-            recipe.save()
-            return redirect("home")
+            if request.user.is_authenticated:
+                recipe.created_by = request.user
+                recipe.save()
+                form.save_m2m() 
+                return redirect("home")
+            else: 
+                return redirect("forbidden")
     
     context = {
         "form": form,
@@ -92,6 +112,7 @@ def create_recipe_view(request):
 # RECIPE DETAIL VIEW
 def recipe_detail_view(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
+   
     context = {
         "recipe": recipe,
     }
@@ -99,6 +120,7 @@ def recipe_detail_view(request, recipe_id):
     return render(request, "recipe_detail.html", context)
 
 # DELETE RECIPE
+# AUTHENTICATION HAPPENS IN TEMPLATE
 def recipe_delete(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     recipe.delete()
@@ -121,30 +143,25 @@ def recipe_update(request, recipe_id):
     return render(request, 'update_recipe.html', context)
 
 
-# CREATE NEW CATEGORY HERE LOGGIN IN REQUIRED
-
+# CREATE NEW CATEGORY
 def create_category(request):
-    form = CategoryForm()
+    form = CategoryForm()     
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("home")
+    
     context = {
         "form": form,
     }
     return render(request, 'add_cat.html', context)
 
 
+# DELEETE CATEGORY
+def delete_category(request, cat_id):
+    cat = Category.objects.get(id=cat_id)
+    cat.delete()
+    return redirect("home")
 
-# USER FORBIDDEN PAGE
-def forbidden_view(request):
-    form = LoginForm()
-    register = RegisterForm()
-    
-    context = {
-        "form": form,
-        "register": register,
-    }
-    
-    return render(request, 'forbidden.html', context)
+

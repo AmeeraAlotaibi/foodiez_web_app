@@ -3,9 +3,9 @@
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <form action="{% url 'login' %}" method="post" class="form">
-            {% csrf_token %}
+            
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold" id="loginLabel">Login to account</h5>
@@ -15,7 +15,9 @@
                     <p>
                         Please login using the correct combination of username and password!
                     </p>
+                    {% csrf_token %}
                     {% bootstrap_form form %}
+                    {% bootstrap_form_errors form %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
