@@ -7,7 +7,7 @@
         <div class="border w-75 p-5">
             <!-- recipe title and difficulty -->
             <div class="d-flex justify-content-between align-items-center">
-                <h1 class="fw-bold">{{recipe.name}}</h1>
+                <h1 class="fw-bold" style="text-transform: capitalize;">{{recipe.name}}</h1>
                 <!-- if statement here -->
                 {% if recipe.difficulty == "Easy" %}
                     <p><span class="badge text-bg-success fs-6">{{ recipe.difficulty }}</span></p>
@@ -33,18 +33,22 @@
                     <span class="ms-4"><i class="fa-solid fa-clock me-2"></i>{{ recipe.duration }}</span>
                 </div>
             </div>
-            <!-- recipe rating -->
+
+
+            <!-- recipe rating
             <div class="text-warning">
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star text-muted"></i>
-            </div>
+            </div> -->
 
             <!-- recipe image -->
             <div class="container bg-light mt-4">
-                <img src="{{ recipe.image.url }}" alt="" class="img-fluid">
+                <center>
+                    <img src="{{ recipe.image.url }}" alt="" class="img-fluid">
+                </center>
             </div>
 
 

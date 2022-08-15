@@ -3,22 +3,29 @@
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 
-
 {%  block content %}
-<div class="bg-warning pt-3 pb-2 mb-5">
-    <center>
-        <p class="text-dark fs-1 fw-bold">Create a new Recipe</p>
-    </center> 
-</div>
-
-<div class="container border rounded w-50 mb-5">
-    <form action="{% url 'create-recipe' %}" method="post" enctype="multipart/form-data" class="p-5">
-        {% csrf_token %}
-        {% bootstrap_form form %}
+{% if request.user.is_authenticated %}
+    <div class="bg-warning pt-3 pb-2 mb-5">
         <center>
-            <input class="btn btn-warning mt-4 fs-4 w-25" type="submit" value="Create">
-        </center>
-    </form>
-</div>
+            <p class="text-dark fs-1 fw-bold">Create a new Recipe</p>
+        </center> 
+    </div>
 
-{% endblock content%}
+    <div class="container border rounded w-50 mb-5">
+        <form action="{% url 'create-recipe' %}" method="post" enctype="multipart/form-data" class="p-5">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <center>
+                <input class="btn btn-warning mt-4 fs-4 w-25" type="submit" value="Create">
+            </center>
+        </form>
+    </div>
+{% else %}
+    <!-- {% include 'forbidden.html' %} -->
+{% endif %}
+
+    {% endblock content %}
+
+
+
+

@@ -1,25 +1,24 @@
-
 {% load bootstrap4 %}
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
-<div class="modal fade" id="register" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <form action="{% url 'register' %}" method="post" class="form">
+<div class="modal fade" id="ing" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ingLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{% url 'create-ingredient' %}" method="post" class="form">
             {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="registerLabel">Register a new account</h5>
+                    <h5 class="modal-title fw-bold" id="ingLabel">Add a new ingredient</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>
-                        Register using a unique username and a strong password!
+                    <p class="fs-6 fw-normal">
+                        Enter the name of the new ingredient!
                     </p>
-                    {% bootstrap_form register_form %}
+                    {% bootstrap_form ingredient_form %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-warning" value="register">Register</button>
+                    <button type="submit" class="btn btn-warning" value="Add">Add</button>
                 </div>
             </div>
         </form>

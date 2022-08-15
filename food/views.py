@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from .models import Category, Recipe
-from .forms import CategoryForm, RecipeForm, RegisterForm, LoginForm
+from .models import Category, Ingredient, Recipe
+from .forms import CategoryForm, IngredientForm, RecipeForm, RegisterForm, LoginForm
 
 
 # Create your views here.
@@ -16,7 +16,6 @@ def register_view(request):
             user.set_password(user.password)
             user.save()
             login(request, user)
-            messages.success(f"Account created for {user}")
             return redirect("home")
     context = {
         "form": form,
@@ -54,19 +53,23 @@ def logout_view(request):
 # home page view 
 # add context later for all models
 def home_view(request):
-    form = LoginForm()
-    register = RegisterForm()
+    login_form = LoginForm()
+    register_form = RegisterForm()
     recipes = Recipe.objects.all()
     editors_pick = Recipe.objects.filter(editor_pick=True)
     categories = Category.objects.all()
+    ingredients = Ingredient.objects.all()
     category_form = CategoryForm()
+    ingredient_form = IngredientForm()
     context = {
-        "form": form,
-        "register": register,
+        "login_form": login_form,
+        "register_form": register_form,
         "recipes": recipes,
         "categories": categories,
         "category_form": category_form ,
         "editors_pick": editors_pick,
+        "ingredient_form": ingredient_form,
+        "ingredients": ingredients,
     }
 
     return render(request, "base.html", context)
@@ -165,3 +168,16 @@ def delete_category(request, cat_id):
     return redirect("home")
 
 
+def create_ingredient(request):
+    form = IngredientForm()
+    if request.method == "POST":
+        form = IngredientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    
+    context = {
+        "form": form
+    }
+    
+    return render(request, 'add_ing.html', context)

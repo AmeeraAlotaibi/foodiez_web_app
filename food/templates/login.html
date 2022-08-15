@@ -16,8 +16,8 @@
                         Please login using the correct combination of username and password!
                     </p>
                     {% csrf_token %}
-                    {% bootstrap_form form %}
-                    {% bootstrap_form_errors form %}
+                    {% bootstrap_form login_form %}
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
