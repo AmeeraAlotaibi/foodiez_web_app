@@ -181,3 +181,10 @@ def create_ingredient(request):
     }
     
     return render(request, 'add_ing.html', context)
+
+
+
+
+# Admin page view 
+def admin_view(request):
+    return render(request, 'admin.html')

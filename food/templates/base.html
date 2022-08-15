@@ -18,7 +18,7 @@
     <!-- Font Awesome icons -->
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
     <!-- css file -->
-    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <title>{% block title %} Home {% endblock title %}</title>
 </head>
 <body >
@@ -27,8 +27,9 @@
          <div class="container-fluid d-flex justify-content-center align-items-center w-100">
              <ul class="navbar-nav mb-2 mb-lg-0 d-flex justify-content-start align-items-center w-75">
                  <li class="nav-item fs-2 fw-bold mx-5"><a class="nav-link link-warning" href="{% url 'home' %}">FOODIEZ</a></li>
-                 <li class="nav-item fs-5 fw-semibold mx-1"><a class="nav-link link-dark" href="{% url 'home' %}">Recipes</a></li>
-                 <li class="nav-item fs-5 fw-semibold mx-1"><a class="nav-link link-dark" href="{% url 'create-recipe' %}">Add a recipe</a></li>
+                 {% if request.user.is_authenticated and request.user.is_staff %}
+                 <li class="nav-item fs-5 fw-semibold mx-1"><a class="nav-link link-dark" href="{% url 'admin-page' %}"><i class="fa-solid fa-user-lock me-2"></i> Admin</a></li>
+                 {% endif %}
              </ul>
              <!-- Authentication -->
              <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">

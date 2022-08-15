@@ -30,3 +30,8 @@ footer {
 .filter-container {
     width: 100vw;
 }
+
+.filter-tag {
+    font-size: 12px;
+    background-color: rgb(226, 12, 12);
+}
