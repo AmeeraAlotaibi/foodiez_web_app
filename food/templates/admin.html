@@ -1,39 +1,69 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<!-- table content for categories and ingredients to delete them -->
+{% include 'confirm_delete_modal.html' %}
 <!-- work in progress -->
 <section class="container w-50 py-5 my-5">
-    <h1 class="fs-3 fw-bold text-uppercase">Categories:</h1>
-    <table class="table">
+    <h1 class="fs-3 fw-bold text-uppercase mb-4">Categories:</h1>
+    <table class="table table-hover">
         <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>  
+            <tr class="bg-warning">
+                <th scope="col">#ID</th>
+                <th scope="col">Name</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
+            {% for category in categories %}
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <th scope="row" class="align-middle">{{ category.id }}</th>
+                <td class="fs-5 align-middle">{{ category.name}}</td>
+                <td>
+                    <div class="float-right">
+                        <a href="{% url 'delete-category' cat_id=category.id%}" class="btn btn-danger confirm-delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{category.id}}">Delete</a>
+                    </div>
+                </td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </section>
 
+<section class="container w-50 pb-5 mt-5">
+    <h1 class="fs-3 fw-bold text-uppercase mb-4">ingredients:</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr class="bg-warning">
+                <th scope="col">#ID</th>
+                <th scope="col">Name</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ingredient in ingredients %}
+            <tr>
+                <th scope="row" class="align-middle">{{ ingredient.id }}</th>
+                <td class="fs-5 align-middle">{{ ingredient.name}}</td>
+                <td>
+                    <div class="float-right">
+                        <a href="{% url 'delete-ingredient' ing_id=ingredient.id%}" class="btn btn-danger confirm-delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" id="deleteButton{{ingredient.id}}">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<script>
+    $(document).on('click', '.confirm-delete', function () {
+    $("#confirmDeleteModal").attr("caller-id", $(this).attr("id"));
+    });
+
+    $(document).on('click', '#confirmDeleteButtonModal', function () {
+    var caller = $("#confirmDeleteButtonModal").closest(".modal").attr("caller-id");
+    window.location = $("#".concat(caller)).attr("href");
+    });
+</script>
 
 {% endblock content %}

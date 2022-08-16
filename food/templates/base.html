@@ -4,95 +4,108 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- google fonts= font: 'inter' weights: 300 400 500 800 -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800&display=swap" rel="stylesheet">
-        <!-- bootstrap4 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-        <!-- Font Awesome icons -->
-        <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
-        <!-- css file -->
-        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-        <title>{% block title %} Home {% endblock title %}</title>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- google fonts= font: 'inter' weights: 300 400 500 800 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800&display=swap" rel="stylesheet">
+    <!-- bootstrap4 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- Font Awesome icons -->
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+    <!-- css file -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>{% block title %} Home {% endblock title %}</title>
 
 
 
-    </head>
-    <body >
-        <header>
-            <nav class="navbar navbar-expand-lg bg-white">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-white">
             <div class="container-fluid d-flex justify-content-center align-items-center w-100">
                 <ul class="navbar-nav mb-2 mb-lg-0 d-flex justify-content-start align-items-center w-75">
-                    <li class="nav-item fs-2 fw-bold mx-5"><a class="nav-link link-warning" href="{% url 'home' %}">FOODIEZ</a></li>
-                    <!-- {% if request.user.is_authenticated and request.user.is_staff %}
-                    <li class="nav-item fs-5 fw-semibold mx-1"><a class="nav-link link-dark" href="{% url 'admin-page' %}"><i class="fa-solid fa-user-lock me-2"></i> Admin</a></li>
-                    {% endif %} -->
+                    <li class="nav-item fs-2 fw-bold mx-5"><a class="nav-link link-warning"
+                            href="{% url 'home' %}">FOODIEZ</a></li>
+                    <!-- display the username -->
+                    <li class="nav-item fs-5 me-2">Welcome, {{ request.user.username }}!</li>
+                    <!-- display the admin link for staff users -->
+                    {% if request.user.is_authenticated and request.user.is_staff %}
+                    <li class="nav-item text-warning fs-4">|</li>
+                    <li class="nav-item fs-5 fw-semibold mx-1"><a class="nav-link link-dark"
+                            href="{% url 'admin-page' %}"><i class="fa-solid fa-user-lock me-2"></i> Admin</a></li>
+                    {% endif %}
                 </ul>
                 <!-- Authentication -->
                 <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
                     {% if request.user.is_authenticated %}
-                    <li class="nav-item fs-5 fw-semibold mx-auto"><a class="nav-link link-dark" href="{% url 'logout' %}">Logout</a></li>
+                    <li class="nav-item fs-5 fw-semibold mx-auto"><a class="nav-link link-dark"
+                            href="{% url 'logout' %}">Logout</a></li>
                     {% else %}
                     <li class="nav-item fs-5 fw-semibold mx-auto">
                         <a href="#" class="nav-link link-dark" data-bs-toggle="modal" data-bs-target="#login">
-                    Login
+                            Login
                         </a>
                     </li>
-                        {% include 'login.html' %}
-                    <li class="nav-item fs-5 fw-bold text-warning">|</li>       
+                    {% include 'login.html' %}
+                    <li class="nav-item fs-5 fw-bold text-warning">|</li>
                     <li class="nav-item fs-5 fw-semibold mx-auto">
                         <a href="#" class="nav-link link-dark" data-bs-toggle="modal" data-bs-target="#register">
-                    Register
+                            Register
                         </a>
                     </li>
                     {% include 'register.html' %}
                     {% endif %}
                 </ul>
             </div>
-            </nav>
-        </header>
-        
-        {% block content %}
-        <!-- main page that displays all the info -->
-        {% include 'landing_page.html' %}
-        {% endblock content %}
-        
-        <!-- footer -->
-        <footer class="m-auto bg-dark pt-5 pb-5">
-            <div class="container w-75 mb-5 d-flex justify-content-between">
-                <a class="link-warning fs-2 fw-bold m-0" href="{% url 'home' %}">FOODIEZ</a>
-                <div class="d-flex flex-column">
-                    <p class="fs-5 fw-semibold mt-2 mb-2 text-warning">About</p>
-                    <a class="link-light" href="#">about us</a>
-                    <a class="link-light" href="#">terms of use</a>
-                    <a class="link-light" href="#">career</a>
-                </div>
-                <div class="d-flex flex-column">
-                    <p class="fs-5 fw-semibold mt-2 mb-2 text-warning">Services</p>
-                    <a class="link-light" href="#">Food</a>
-                    <a class="link-light" href="#">Recipes</a>
-                    <a class="link-light" href="#">Chefs</a>
-                </div>
-                <div class="d-flex flex-column text-light">
-                    <p class="fs-5 fw-semibold mt-2 mb-2 text-warning">Address</p>
-                    <p class="m-0"><i class="fa-solid fa-location-dot me-2 text-warning"></i> City, Country</p>
-                    <p class="m-0"><i class="fa-solid fa-phone me-2 text-warning"></i> +965 5034 3455</p>
-                    <p class="m-0"><i class="fa-solid fa-at me-2 text-warning"></i>testing@testing.com</p>
-                </div>
+        </nav>
+    </header>
+
+    {% block content %}
+    <!-- main page that displays all the info -->
+    {% include 'landing_page.html' %}
+    {% endblock content %}
+
+    <!-- footer -->
+    <footer class="m-auto bg-dark pt-5 pb-5">
+        <div class="container w-75 mb-5 d-flex justify-content-between">
+            <a class="link-warning fs-2 fw-bold m-0" href="{% url 'home' %}">FOODIEZ</a>
+            <div class="d-flex flex-column">
+                <p class="fs-5 fw-semibold mt-2 mb-2 text-warning">About</p>
+                <a class="link-light" href="#">about us</a>
+                <a class="link-light" href="#">terms of use</a>
+                <a class="link-light" href="#">career</a>
             </div>
-            <center class="mt-auto">
-                <p class="footer-text fs-6">
-                    ©️ Made by: Ameera
-                </p>
-            </center>
-        </footer>
-        <!-- script files -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    </body>
+            <div class="d-flex flex-column">
+                <p class="fs-5 fw-semibold mt-2 mb-2 text-warning">Services</p>
+                <a class="link-light" href="#">Food</a>
+                <a class="link-light" href="#">Recipes</a>
+                <a class="link-light" href="#">Chefs</a>
+            </div>
+            <div class="d-flex flex-column text-light">
+                <p class="fs-5 fw-semibold mt-2 mb-2 text-warning">Address</p>
+                <p class="m-0"><i class="fa-solid fa-location-dot me-2 text-warning"></i> City, Country</p>
+                <p class="m-0"><i class="fa-solid fa-phone me-2 text-warning"></i> +965 5034 3455</p>
+                <p class="m-0"><i class="fa-solid fa-at me-2 text-warning"></i>testing@testing.com</p>
+            </div>
+        </div>
+        <center class="mt-auto">
+            <p class="footer-text fs-6">
+                ©️ Made by: Ameera
+            </p>
+        </center>
+    </footer>
+    <!-- script files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</body>
+
 </html>

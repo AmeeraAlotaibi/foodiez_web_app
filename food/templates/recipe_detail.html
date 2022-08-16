@@ -10,13 +10,13 @@
                 <h1 class="fw-bold" style="text-transform: capitalize;">{{recipe.name}}</h1>
                 <!-- if statement here -->
                 {% if recipe.difficulty == "Easy" %}
-                    <p><span class="badge text-bg-success fs-6">{{ recipe.difficulty }}</span></p>
+                <p><span class="badge text-bg-success fs-6">{{ recipe.difficulty }}</span></p>
                 {% elif recipe.difficulty == "Medium" %}
-                    <p><span class="badge text-bg-warning fs-6">{{ recipe.difficulty }}</span></p>
+                <p><span class="badge text-bg-warning fs-6">{{ recipe.difficulty }}</span></p>
                 {% elif recipe.difficulty == "Hard" %}
-                    <p><span class="badge text-bg-danger fs-6">{{ recipe.difficulty }}</span></p>
+                <p><span class="badge text-bg-danger fs-6">{{ recipe.difficulty }}</span></p>
                 {% else %}
-                    null
+                null
                 {% endif %}
             </div>
             <!-- recipe small details with icons -->
@@ -33,7 +33,6 @@
                     <span class="ms-4"><i class="fa-solid fa-clock me-2"></i>{{ recipe.duration }}</span>
                 </div>
             </div>
-
 
             <!-- recipe rating
             <div class="text-warning">
@@ -66,55 +65,62 @@
             ======== SideBar ==========
             ===========================
          -->
-   
+
         <div class="w-25 py-5 px-4 bg-light text-dark">
             {% if request.user == recipe.created_by %}
             <div class="mb-5 d-flex justify-content-end">
-                <a href="{% url 'update-recipe' recipe_id=recipe.id %}"><i class="fa-solid fa-pen text-primary fs-5 me-3"></i></a>
+                <a href="{% url 'update-recipe' recipe_id=recipe.id %}"><i
+                        class="fa-solid fa-pen text-primary fs-5 me-3"></i></a>
                 <!-- modal link -->
-                <a href="" data-bs-toggle="modal" data-bs-target="#deleteModal"> <i class="fa-solid fa-trash text-danger fs-5"></i></a>
-                        <!-- Modal -->
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
+                <a href="" data-bs-toggle="modal" data-bs-target="#deleteModal"> <i
+                        class="fa-solid fa-trash text-danger fs-5"></i></a>
+                <!-- Modal -->
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
                         <form action="{% url 'delete-recipe' recipe_id=recipe.id %}" method="post">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModalLabel">Confirm deletion</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="modal-title" id="deleteModalLabel">Confirm deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     {% csrf_token %}
-                                <p>Are you sure you want to delete this recipe? <br> You can't reverse this action.</p>
+                                    <p>Are you sure you want to delete this recipe? <br> You can't reverse this action.
+                                    </p>
                                 </div>
                                 <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </div>
                             </div>
                         </form>
-                            </div>
-                        </div>      
-            </div>
-            {% endif %}
-
-
-            <!-- category -->
-            <div class="d-flex justify-content-between align-items-center ">
-                <h4 class="mb-3 fs-5 fw-semibold">Category: </h4>
-                <p class="badge badge-warning fs-6 fw-normal text-dark">{{ recipe.category }}</p>
-            </div>
-            <hr>
-            <!-- ingredients -->
-            <div class="pt-2">
-                <h4 class="mb-3 fs-5 fw-semibold">Ingredients: </h4>
-                <div class="d-flex flex-wrap">
-                    {% for ing in recipe.ingredients.all %}
-                    <span class="badge badge-warning text-dark fs-6 fw-normal me-2 mb-2">{{ ing.name }}</span> 
-                    {% endfor %}
+                    </div>
                 </div>
-                
             </div>
         </div>
+        {% endif %}
+
+
+        <!-- category -->
+        <div class="d-flex justify-content-between align-items-center ">
+            <h4 class="mb-3 fs-5 fw-semibold">Category: </h4>
+            <p class="badge badge-warning fs-6 fw-normal text-dark">{{ recipe.category }}</p>
+        </div>
+        <hr>
+        <!-- ingredients -->
+        <div class="pt-2">
+            <h4 class="mb-3 fs-5 fw-semibold">Ingredients: </h4>
+            <div class="d-flex flex-wrap">
+                {% for ing in recipe.ingredients.all %}
+                <span class="badge badge-warning text-dark fs-6 fw-normal me-2 mb-2">{{ ing.name }}</span>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
     </div>
 </section>
 

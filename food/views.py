@@ -143,7 +143,7 @@ def create_category(request):
 def delete_category(request, cat_id):
     cat = Category.objects.get(id=cat_id)
     cat.delete()
-    return redirect("home")
+    return redirect("admin-page")
 
 # ADD INGREDIENT
 def create_ingredient(request):
@@ -160,9 +160,22 @@ def create_ingredient(request):
     return render(request, 'add_ing.html', context)
 
 
+# DELETE INGREDIENT
+def delete_ingredient(request, ing_id):
+    ingredient = Ingredient.objects.get(id=ing_id)
+    ingredient.delete()
+    return redirect("admin-page")
+
+
 # Admin page view - will adjust later 
 def admin_view(request):
-    return render(request, 'admin.html')
+    categories = Category.objects.all()
+    ingredients = Ingredient.objects.all()
+    context = {
+        "categories": categories,
+        "ingredients": ingredients,
+    }
+    return render(request, 'admin.html', context)
 
 
 
