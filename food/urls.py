@@ -1,6 +1,11 @@
 from django.urls import path
 from food.views import admin_view, create_category, create_ingredient, create_recipe_view, delete_category, home_view, login_view, logout_view, recipe_detail_view, recipe_update, register_view, recipe_delete, filter_recipes, delete_ingredient
 
+# to help reduce the number of imports, some developers would just import the whole view
+# from . import views
+# then reference views.<function> in the urls
+# this also helps reduce the amount of type you have to repeat the writing the view handler's name
+
 urlpatterns = [
     # LANDING PAGE HOME 
     path("", home_view, name="home"),

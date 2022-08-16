@@ -20,7 +20,11 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
-
+# There is a relationship missing between the ingredient and the category, according to the trello board,
+# refer to ---> As a user, I can see all the ingredients that belong to a category
+# This means that every time an ingredient is created, a relationship between said ingredient is established with a category
+# Im certain you are going to manage to integrate this type of relationship into to project
+# This should be a priority over working on the search functionality with ajax
 class Recipe(models.Model):
     
     difficulty_choices = [

@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% comment %}
+    I needed to add this 
+        {% load bootstrap4 %}
+    to resolve a bug, you might want to include this in a few templates just incase including this one
+{% endcomment %}
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 
@@ -21,6 +26,8 @@
 
 {% endblock content %}
 
-
+{% comment %} 
+    for better user experience, there is currently the main page for users to add ingredients, in the create view and template for recipe create, users might appreciate the option to add at least one new ingredient
+{% endcomment %}
 
 
