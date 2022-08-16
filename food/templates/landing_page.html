@@ -1,35 +1,37 @@
 {% load static %}
-<!-- start -->
 {% block content %}
+
 <!-- Hero -->
 <section class="bg-warning">
     <div class="container w-75 pt-5 pb-5 d-flex justify-content-between align-items-center">
+        <!-- hero content  -->
         <div class="title-container d-flex flex-column justify-content-center align-items-start ">
             <h1 class="header">It's all about good<br><span class="text-light">food</span> & taste</h1>
-            <a href="#all-recipes" type="button" class="btn btn-dark fs-5 mt-3 px-5">See all <i class="fa-solid fa-angle-right mx-2 fs-6"></i></a>
+            <a href="#all-recipes" type="button" class="btn btn-dark fs-5 mt-3 px-5">See all <i
+                    class="fa-solid fa-angle-right mx-2 fs-6"></i></a>
         </div>
-    
+        <!-- hero image -->
         <div>
             <img src="{% static '/images/meal-bg.png' %}" alt="a plate of food">
         </div>
     </div>
 </section>
+
 <!-- handpicked recipes -->
 <section class="pb-5">
-    <!-- container -->
     <div class="container-fluid w-100 pt-5 pb-5">
+        <!-- section title -->
         <div class="container">
             <h2 class="fs-2 fw-semibold mb-5 mt-5 pb-1">✨ Editor's Picks</h2>
         </div>
-        <!-- flexbox row 3 -->
         <div class="container-fluid d-flex justify-content-center flex-wrap">
             {% for recipe in editors_pick %}
-            <!-- recipe card -->
+            <!-- recipe card big -->
             <div class="card me-4" style="width: 30rem; height: max-content;">
                 <center style="background-color: rgb(247, 247, 247);">
-                    <img src="{{ recipe.image.url }}" class="card-img-top w-100" alt="recipe image" style="object-fit: cover; height: 500px;">
+                    <img src="{{ recipe.image.url }}" class="card-img-top w-100" alt="recipe image"
+                        style="object-fit: cover; height: 500px;">
                 </center>
-
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         {% if recipe.difficulty == "Easy" %}
@@ -53,9 +55,10 @@
                         width: 100%;">{{ recipe.description }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <!-- category -->
-                        <span class="badge text-bg-dark px-3 py-2">{{ recipe.category }}</span>
+                        <span class="badge text-bg-light px-3 py-2">{{ recipe.category }}</span>
                         <!-- read more button -->
-                        <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning fw-semibold">Read more <i class="fa-solid fa-angle-right mx-1"></i></a>
+                        <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning fw-semibold">Read
+                            more <i class="fa-solid fa-angle-right mx-1"></i></a>
                     </div>
                 </div>
             </div>
@@ -68,163 +71,168 @@
 <!-- categories section -->
 <section class="bg-warning pb-5">
     <div class="container w-75 py-5 ">
+        <!-- section title -->
         <h2 class="fs-2 fw-semibold mb-4 mt-5 pb-1">Categories</h2>
         <!-- flexbox row wrap for displaying all categories -->
         <div class="d-flex flex-wrap ms-2 align-items-center">
             {% for cat in categories %}
-                <div href="#" type="link" class="btn btn-light d-flex justify-content-between align-items-center py-1 ps-3 mb-2 me-2">
-                    <p class="fs-4 me-3 my-0">{{ cat.name }}</p>
-                    <p class="m-0"></p>
-                </div>
-                
+            <div href="#" type="link"
+                class="btn btn-light d-flex justify-content-between align-items-center py-1 ps-3 mb-2 me-2">
+                <p class="fs-4 me-3 my-0">{{ cat.name }}</p>
+                <p class="m-0"></p>
+            </div>
             {% endfor %}
-            
+            <!-- to add a new category if user is logged in -->
             {% if request.user.is_authenticated %}
             <span type="button" class="badge badge-light text-dark fs-4 me-2 mb-2 px-2">
                 <a href="#" class="link-dark" data-bs-toggle="modal" data-bs-target="#cat">
                     <i class="fa-solid fa-circle-plus py-1 text-success"></i>
                 </a>
-                {% include 'add_cat.html' %}      
-            </span> 
-            {% else %}
+                {% include 'add_cat.html' %}
+            </span>
             {% endif %}
         </div>
     </div>
 </section>
 
-<section id="all-recipes">
+
+<!-- all recipes and filters section -->
+<section id="all-recipes" class="pb-5 mb-5 pt-3">
+    <!-- title and add new recipe button -->
     <div class="container-fluid w-75 d-flex justify-content-between align-items-center mb-2">
         <h2 class="fs-2 fw-semibold mb-4 mt-5 pb-1 " style="margin-left: 13%;">All Recipes</h2>
         {% if request.user.is_authenticated %}
-        <a href="{% url 'create-recipe' %}" type="button" class="btn btn-warning fs-5 mt-3 px-5"><i class="fa-solid fa-bowl-food fs-6 me-1"></i> Add Recipe</a>
+        <a href="{% url 'create-recipe' %}" type="button" class="btn btn-warning fs-5 mt-3 px-5"><i
+                class="fa-solid fa-bowl-food fs-6 me-1"></i> Add Recipe</a>
         {% endif %}
     </div>
-    
 
-    <div class="container-fluid w-100 pb-5 ms-5 d-flex justify-content-center align-items-center">    
-        <div class="d-flex w-75">
-            <!-- filter sidebar container -->
-            <div class="filter-container bg-light p-4 ms-5" style="width: 20vw;">
-                <h6 class="fw-bold fs-4"><i class="fa-solid fa-filter fs-6 me-2"></i> Filter by: </h6>
-                
-                
-                <!-- filter by difficulty -->
-                <h6 class="mt-3 mb-2 fw-bold">Difficulty: </h6>
-                <div class="ms-4">
-                    <!-- Easy -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="easy">
-                        <label class="form-check-label" for="easy">
-                        Easy
-                        </label>                  
-                    </div>
-                    <!-- Medium -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="medium">
-                        <label class="form-check-label" for="medium">
-                        Medium
-                        </label>                  
-                    </div>
-                    <!-- Hard -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="hard">
-                        <label class="form-check-label" for="hard">
-                        Hard
-                        </label>                  
-                    </div>
-                </div>
+    <!-- container for recipes and filter sidebar -->
+    <div class="container-fluid" style="margin-left: 5%;">
+        <div class="row">
+            <div class="col-md-2 p-0 m-0 bg-light">
+                <div class="d-flex">
+                    <!-- filter sidebar container -->
+                    <div class="p-4 ms-3" style="width: 15vw;">
+                        <h6 class="fw-bold fs-4"><i class="fa-solid fa-filter fs-6 me-2"></i> Filter by: </h6>
 
-
-                <!-- filter by category -->
-                <h6 class="mt-3 mb-2 fw-bold border-top pt-2">Category: </h6>
-                <div class="ms-4">
-                    {% for category in categories %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="{{category.name}}">
-                        <label class="form-check-label" for="{{category.name}}">
-                            {{category.name}}
-                        </label>                  
-                    </div>
-                    {% empty %}
-                    <p>There's nothing to see here</p>
-                    {% endfor %}
-                </div>
-                
-                
-                <!-- filter by ingredient -->
-                <div class="mt-3 mb-2 border-top pt-2 d-flex justify-content-between align-items-center">
-                    <h6 class="fw-bold">Ingredient: </h6>
-                    {% if request.user.is_authenticated %}
-                    <span class="badge badge-success py-1 px-2 m-0"><a href="#" class="link-light"  data-bs-toggle="modal" data-bs-target="#ing">Add</a></span>
-                        {% include 'add_ing.html' %}      
-                    {% endif %}
-                </div>
-                <div class="ms-4">
-                    {% for ingredient in ingredients %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="{{ingredient.name}}">
-                        <label class="form-check-label" for="{{ingredient.name}}">
-                            {{ingredient.name}}
-                        </label>                  
-                    </div>
-                    {% empty %}
-                    <p>There's nothing to see here</p>
-                    {% endfor %}
-                </div>
-                <!-- end of filter container -->
-            </div>
+                        <!-- filter by difficulty -->
+                        <h6 class="mt-3 mb-2 fw-bold">Difficulty: </h6>
+                        <div class="ms-4">
+                            <!-- Easy -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" data-filter="difficulty" value="easy">
+                                <label class="form-check-label" for="easy">
+                                    Easy
+                                </label>
+                            </div>
+                            <!-- Medium -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" data-filter="difficulty" value="medium">
+                                <label class="form-check-label" for="medium">
+                                    Medium
+                                </label>
+                            </div>
+                            <!-- Hard -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" data-filter="difficulty" value="hard">
+                                <label class="form-check-label" for="hard">
+                                    Hard
+                                </label>
+                            </div>
+                        </div>
 
 
-            <!-- recipes container -->
-            <div class=" d-flex flex-wrap ms-3" >
-                {% for recipe in recipes %}
-                <!-- recipe card -->
-                <div class="card me-3 mb-3" style="width: 17rem; height: max-content;">
-                    <center style="background-color: rgb(247, 247, 247);">
-                        <img src="{{ recipe.image.url }}" class="card-img-top w-100" alt="recipe image" style="object-fit: cover; height: 200px;">
-                    </center>
+                        <!-- filter by category -->
+                        <h6 class="mt-3 mb-2 fw-bold border-top pt-2">Category: </h6>
+                        <div class="ms-4">
+                            {% for category in categories %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" data-filter="category"
+                                    value="{{category.name}}">
+                                <label class="form-check-label" for="{{category.name}}">
+                                    {{category.name}}
+                                </label>
+                            </div>
+                            {% empty %}
+                            <p>There's nothing to see here</p>
+                            {% endfor %}
+                        </div>
 
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            {% if recipe.difficulty == "Easy" %}
-                            <p><span class="badge text-bg-success py-1 px-2">{{ recipe.difficulty }}</span></p>
-                            {% elif recipe.difficulty == "Medium" %}
-                            <p><span class="badge text-bg-warning py-1 px-2">{{ recipe.difficulty }}</span></p>
-                            {% elif recipe.difficulty == "Hard" %}
-                            <p><span class="badge text-bg-danger py-1 px-2">{{ recipe.difficulty }}</span></p>
-                            {% else %}
-                            null
+
+                        <!-- filter by ingredient -->
+                        <div class="mt-3 mb-2 border-top pt-2 d-flex justify-content-between align-items-center">
+                            <h6 class="fw-bold">Ingredient: </h6>
+                            {% if request.user.is_authenticated %}
+                            <span class="badge badge-success py-1 px-2 m-0"><a href="#" class="link-light"
+                                    data-bs-toggle="modal" data-bs-target="#ing">Add</a></span>
+                            {% include 'add_ing.html' %}
                             {% endif %}
-                            <p class="text-muted"><i class="fa-solid fa-clock me-2"></i>{{ recipe.duration }}</p>
                         </div>
-                        <h5 class="card-title fw-semibold fs-5" style="text-transform: capitalize;">{{ recipe.name }}</h5>
-                        <!-- recipe description -->
-                        <p class="card-text fs-6" style="
-                            line-height: 1.5em; 
-                            height: 2em; 
-                            overflow: hidden; 
-                            white-space: nowrap;
-                            text-overflow: ellipsis;
-                            width: 100%;">
-                            {{ recipe.description }}
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <!-- category -->
-                            <span class="badge text-bg-dark px-3 py-2">{{ recipe.category }}</span>
-                            <!-- read more button -->
-                            <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning fw-semibold"><i class="fa-solid fa-angle-right mx-1"></i></a>
+                        <div class="ms-4 pb-3 border-bottom">
+                            {% for ingredient in ingredients %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" data-filter="ingredient"
+                                    value="{{ingredient.name}}">
+                                <label class="form-check-label" for="{{ingredient.name}}">
+                                    {{ingredient.name}}
+                                </label>
+                            </div>
+                            {% empty %}
+                            <p>There's nothing to see here</p>
+                            {% endfor %}
                         </div>
-                        
                     </div>
+                    <!-- end of filter container -->
                 </div>
-                <!-- end of recipe card -->
-                {% endfor %}
             </div>
-
+            <div class="col-md-10 p-0 m-0">
+                <!-- recipes container -->
+                {% include 'recipes_list.html' %}
+            </div>
         </div>
-
+        <!--  end of list of recipes -->
     </div>
 </section>
-
-
 {% endblock content %}
+
+
+
+
+
+<!--  JQuery script -->
+<script>
+    $(document).ready(function () {
+        $(".ajax-loader").hide();
+        // start of filter by value
+        $(".form-check-input").on('click', function () {
+            let _filterObj = {};
+            $(".form-check-input").each(function (index, element) {
+                let _filterValue = $(this).val();
+                let _filterKey = $(this).data('filter');
+                _filterObj[_filterKey] = Array.from(document.querySelectorAll('input[data-filter=' + _filterKey + ']:checked')).map(function (el) {
+                    console.log(el.value)
+                    return el.value;
+                });
+            });
+            console.log(_filterObj);
+
+            // run ajax
+            $.ajax({
+                url: "filter-recipes/",
+                data: _filterObj,
+                dataType: 'json',
+                beforeSend: function () {
+                    $(".ajax-loader").show();
+                },
+
+                success: function (res) {
+                    console.log(res);
+                    $("#filter-recipes").html(res.data);
+                    $(".ajax-loader").hide();
+                }
+            });
+        });
+        
+    }); 
+</script>

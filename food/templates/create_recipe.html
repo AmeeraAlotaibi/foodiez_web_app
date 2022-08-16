@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
-{% load bootstrap4 %}
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 
 {%  block content %}
-{% if request.user.is_authenticated %}
     <div class="bg-warning pt-3 pb-2 mb-5">
         <center>
             <p class="text-dark fs-1 fw-bold">Create a new Recipe</p>
@@ -20,11 +18,8 @@
             </center>
         </form>
     </div>
-{% else %}
-    <!-- {% include 'forbidden.html' %} -->
-{% endif %}
 
-    {% endblock content %}
+{% endblock content %}
 
 
 

@@ -1,11 +1,12 @@
+from unicodedata import category
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.contrib import messages
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from .models import Category, Ingredient, Recipe
 from .forms import CategoryForm, IngredientForm, RecipeForm, RegisterForm, LoginForm
 
 
-# Create your views here.
 # registeration view
 def register_view(request):
     form = RegisterForm()
@@ -20,7 +21,6 @@ def register_view(request):
     context = {
         "form": form,
     }
-    
     return render(request, "register.html", context)
 
 # loggin in view
@@ -40,7 +40,6 @@ def login_view(request):
     context = {
         "form": form,
     }
-    
     return render(request, "login.html", context)
 
 
@@ -51,7 +50,6 @@ def logout_view(request):
 
 
 # home page view 
-# add context later for all models
 def home_view(request):
     login_form = LoginForm()
     register_form = RegisterForm()
@@ -71,21 +69,7 @@ def home_view(request):
         "ingredient_form": ingredient_form,
         "ingredients": ingredients,
     }
-
     return render(request, "base.html", context)
-
-
-# USER FORBIDDEN PAGE
-def forbidden_view(request):
-    form = LoginForm()
-    register = RegisterForm()
-    
-    context = {
-        "form": form,
-        "register": register,
-    }
-    
-    return render(request, 'forbidden.html', context)
 
 
 
@@ -108,22 +92,24 @@ def create_recipe_view(request):
     context = {
         "form": form,
     }
-    
     return render(request, "create_recipe.html", context)
 
 
 # RECIPE DETAIL VIEW
 def recipe_detail_view(request, recipe_id):
+    login_form = LoginForm()
+    register_form = RegisterForm()
     recipe = Recipe.objects.get(id=recipe_id)
    
     context = {
         "recipe": recipe,
+        "login_form": login_form,
+        "register_form": register_form,
     }
-    
     return render(request, "recipe_detail.html", context)
 
+
 # DELETE RECIPE
-# AUTHENTICATION HAPPENS IN TEMPLATE
 def recipe_delete(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     recipe.delete()
@@ -167,24 +153,36 @@ def delete_category(request, cat_id):
     cat.delete()
     return redirect("home")
 
-
+# ADD INGREDIENT
 def create_ingredient(request):
     form = IngredientForm()
     if request.method == "POST":
         form = IngredientForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect("home") 
     
     context = {
         "form": form
     }
-    
     return render(request, 'add_ing.html', context)
 
 
-
-
-# Admin page view 
+# Admin page view - will adjust later 
 def admin_view(request):
     return render(request, 'admin.html')
+
+
+
+# filter recipes
+def filter_recipes(request):
+    print(request)
+    recipes = Recipe.objects.all()
+    diff = request.GET.getlist("difficulty[]")
+    
+    if len(diff) > 0:
+        recipes = recipes.filter(difficulty__in=diff)
+        print(f"recipes =============== {recipes}" )
+        
+    ajax = render_to_string("ajax/recipes_list.html", {"data": recipes})
+    return JsonResponse({"data": ajax})

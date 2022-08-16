@@ -1,0 +1,44 @@
+{% for recipe in recipes %}
+    <!-- recipe card -->
+    <div class="card me-3 mb-3" style="width: 17rem; height: max-content;">
+        <center style="background-color: rgb(247, 247, 247);">
+            <img src="{{ recipe.image.url }}" class="card-img-top w-100" alt="recipe image"
+                style="object-fit: cover; height: 200px;">
+        </center>
+
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                {% if recipe.difficulty == "Easy" %}
+                <p><span class="badge text-bg-success py-1 px-2">{{ recipe.difficulty }}</span></p>
+                {% elif recipe.difficulty == "Medium" %}
+                <p><span class="badge text-bg-warning py-1 px-2">{{ recipe.difficulty }}</span></p>
+                {% elif recipe.difficulty == "Hard" %}
+                <p><span class="badge text-bg-danger py-1 px-2">{{ recipe.difficulty }}</span></p>
+                {% else %}
+                null
+                {% endif %}
+                <p class="text-muted"><i class="fa-solid fa-clock me-2"></i>{{ recipe.duration }}</p>
+            </div>
+            <h5 class="card-title fw-semibold fs-5" style="text-transform: capitalize;">{{ recipe.name }}</h5>
+            <!-- recipe description -->
+            <p class="card-text fs-6" style="
+                line-height: 1.5em; 
+                height: 2em; 
+                overflow: hidden; 
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                width: 100%;">
+                {{ recipe.description }}
+            </p>
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- category -->
+                <span class="badge text-bg-light px-3 py-2">{{ recipe.category }}</span>
+                <!-- read more button -->
+                <a href="{% url 'recipe-detail' recipe_id=recipe.id %}" class="btn btn-warning fw-semibold"><i
+                        class="fa-solid fa-angle-right mx-1"></i></a>
+            </div>
+
+        </div>
+    </div>
+    <!-- end of recipe card -->
+    {% endfor %}
