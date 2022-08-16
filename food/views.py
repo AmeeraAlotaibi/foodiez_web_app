@@ -1,4 +1,3 @@
-from unicodedata import category
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.http import JsonResponse
@@ -51,8 +50,6 @@ def logout_view(request):
 
 # home page view 
 def home_view(request):
-    login_form = LoginForm()
-    register_form = RegisterForm()
     recipes = Recipe.objects.all()
     editors_pick = Recipe.objects.filter(editor_pick=True)
     categories = Category.objects.all()
@@ -60,8 +57,6 @@ def home_view(request):
     category_form = CategoryForm()
     ingredient_form = IngredientForm()
     context = {
-        "login_form": login_form,
-        "register_form": register_form,
         "recipes": recipes,
         "categories": categories,
         "category_form": category_form ,
@@ -84,6 +79,7 @@ def create_recipe_view(request):
             if request.user.is_authenticated:
                 recipe.created_by = request.user
                 recipe.save()
+                # this is to save the ingredients in the database
                 form.save_m2m() 
                 return redirect("home")
             else: 
@@ -97,14 +93,10 @@ def create_recipe_view(request):
 
 # RECIPE DETAIL VIEW
 def recipe_detail_view(request, recipe_id):
-    login_form = LoginForm()
-    register_form = RegisterForm()
     recipe = Recipe.objects.get(id=recipe_id)
    
     context = {
         "recipe": recipe,
-        "login_form": login_form,
-        "register_form": register_form,
     }
     return render(request, "recipe_detail.html", context)
 
@@ -181,8 +173,8 @@ def filter_recipes(request):
     diff = request.GET.getlist("difficulty[]")
     
     if len(diff) > 0:
-        recipes = recipes.filter(difficulty__in=diff)
-        print(f"recipes =============== {recipes}" )
+        filtered = recipes.filter(difficulty__in=diff)
+        print(f"recipes =============== {filtered}" )
         
-    ajax = render_to_string("ajax/recipes_list.html", {"data": recipes})
+    ajax = render_to_string("ajax/recipes_list.html", {"data": filtered})
     return JsonResponse({"data": ajax})
