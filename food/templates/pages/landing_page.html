@@ -184,6 +184,8 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
+                  onclick="get_difficulty()"
+                  id="difficulty"
                   data-filter="difficulty"
                   value="easy"
                 />
@@ -271,7 +273,7 @@
       </div>
       <div class="col-md-10 p-0 m-0">
         <!-- recipes container -->
-        {% include 'snippets/recipes_list.html' %}
+        {% include 'ajax/recipes_list.html' %}
       </div>
     </div>
     <!--  end of list of recipes -->
@@ -279,42 +281,18 @@
 </section>
 {% endblock content %}
 
-<!--  JQuery script -->
-<script>
-  $(document).ready(function () {
-    $(".ajax-loader").hide();
-    // start of filter by value
-    $(".form-check-input").on("click", function () {
-      let _filterObj = {};
-      $(".form-check-input").each(function (index, element) {
-        let _filterValue = $(this).val();
-        let _filterKey = $(this).data("filter");
-        _filterObj[_filterKey] = Array.from(
-          document.querySelectorAll(
-            "input[data-filter=" + _filterKey + "]:checked"
-          )
-        ).map(function (el) {
-          console.log(el.value);
-          return el.value;
-        });
-      });
-      console.log(_filterObj);
-
-      // run ajax
-      $.ajax({
-        url: "filter-recipes/",
-        data: _filterObj,
-        dataType: "json",
-        beforeSend: function () {
-          $(".ajax-loader").show();
-        },
-
-        success: function (res) {
-          console.log(res);
-          $("#filter-recipes").html(res.data);
-          $(".ajax-loader").hide();
-        },
-      });
+<!--  javascript script -->
+<script type="text/javascript">
+  function get_difficulty() {
+    $.ajax({
+      type: "GET",
+      url: '{% url "filter-recipes" %}',
+      error: function () {
+        console.log("error");
+      },
+      success: function (data) {
+        $("#difficulty").text(data.recipes);
+      },
     });
-  });
+  }
 </script>

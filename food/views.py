@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from django.contrib.auth import login, authenticate, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from .models import Category, Ingredient, Recipe
 from .forms import CategoryForm, IngredientForm, RecipeForm, RegisterForm, LoginForm
+from django.forms.models import model_to_dict
 
 
 # registeration view
@@ -180,13 +182,11 @@ def admin_view(request):
 
 # filter recipes
 def filter_recipes(request):
-    print(request)
-    recipes = Recipe.objects.all()
-    diff = request.GET.getlist("difficulty[]")
-    
-    if len(diff) > 0:
-        filtered = recipes.filter(difficulty__in=diff)
-        print(f"recipes =============== {filtered}" )
-        
-    ajax = render_to_string("ajax/recipes_list.html", {"data": filtered})
-    return JsonResponse({"data": ajax})
+    recipes = list(Recipe.objects.filter(difficulty__exact="Easy"))
+    print(type(recipes))
+    data = {
+        "filter": model_to_dict(recipes[0]),
+    }
+    print(data)
+    # return JsonResponse(data)
+    return HttpResponse("data")
