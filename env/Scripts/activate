@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Meera\Documents\coded_dev\coded_projects\food_web\env"
+VIRTUAL_ENV="C:\Users\Meera\Development\coded_projects\foodiez_web_app\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

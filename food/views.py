@@ -20,7 +20,7 @@ def register_view(request):
     context = {
         "form": form,
     }
-    return render(request, "register.html", context)
+    return render(request, "snippets/register.html", context)
 
 # loggin in view
 def login_view(request):
@@ -38,7 +38,7 @@ def login_view(request):
     context = {
         "form": form,
     }
-    return render(request, "login.html", context)
+    return render(request, "snippets/login.html", context)
 
 
 # logging out view
@@ -87,7 +87,7 @@ def create_recipe_view(request):
     context = {
         "form": form,
     }
-    return render(request, "create_recipe.html", context)
+    return render(request, "pages/create_recipe.html", context)
 
 
 # RECIPE DETAIL VIEW
@@ -97,7 +97,7 @@ def recipe_detail_view(request, recipe_id):
     context = {
         "recipe": recipe,
     }
-    return render(request, "recipe_detail.html", context)
+    return render(request, "pages/recipe_detail.html", context)
 
 
 # DELETE RECIPE
@@ -120,7 +120,7 @@ def recipe_update(request, recipe_id):
         "recipe": recipe,
         "form": form,
     }
-    return render(request, 'update_recipe.html', context)
+    return render(request, 'pages/update_recipe.html', context)
 
 
 # CREATE NEW CATEGORY
@@ -135,7 +135,7 @@ def create_category(request):
     context = {
         "form": form,
     }
-    return render(request, 'add_cat.html', context)
+    return render(request, 'snippets/add_cat.html', context)
 
 
 # DELEETE CATEGORY
@@ -156,7 +156,7 @@ def create_ingredient(request):
     context = {
         "form": form
     }
-    return render(request, 'add_ing.html', context)
+    return render(request, 'snippets/add_ing.html', context)
 
 
 # DELETE INGREDIENT
@@ -174,7 +174,7 @@ def admin_view(request):
         "categories": categories,
         "ingredients": ingredients,
     }
-    return render(request, 'admin.html', context)
+    return render(request, 'pages/admin_page.html', context)
 
 
 

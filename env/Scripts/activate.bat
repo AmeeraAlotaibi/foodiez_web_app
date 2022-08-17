@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\Meera\Documents\coded_dev\coded_projects\food_web\env
+set VIRTUAL_ENV=C:\Users\Meera\Development\coded_projects\foodiez_web_app\env
 
 if not defined PROMPT set PROMPT=$P$G
 
