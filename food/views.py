@@ -34,7 +34,6 @@ def login_view(request):
             auth_user = authenticate(username=username, password=password)
             if auth_user is not None:
                 login(request, auth_user)
-                print("LOGGED IN-----------------------------")
                 return redirect("home")
     context = {
         "form": form,

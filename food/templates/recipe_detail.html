@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {% block content %}
 <!-- container -->
 <section class="w-100 d-flex justify-content-center py-5">
@@ -65,8 +66,8 @@
             ======== SideBar ==========
             ===========================
          -->
-
-        <div class="w-25 py-5 px-4 bg-light text-dark">
+    <div class="d-flex flex-column bg-light py-5 px-4 w-25 ">
+        <div class="text-dark">
             {% if request.user == recipe.created_by %}
             <div class="mb-5 d-flex justify-content-end">
                 <a href="{% url 'update-recipe' recipe_id=recipe.id %}"><i
@@ -120,6 +121,7 @@
             </div>
 
         </div>
+    </div>
     </div>
     </div>
 </section>
