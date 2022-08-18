@@ -14,7 +14,7 @@ urlpatterns = [
     # categories
     path("create-category/", views.create_category, name="create-category"),
     path("delete-category/<int:cat_id>/", views.delete_category, name="delete-category"),
-    path("category-details/<int:cat_id>", views.category_details, name="category-details"),
+    path("category-details/<int:cat_id>/", views.category_details, name="category-details"),
     # ingredients
     path("create-ingredient/", views.create_ingredient, name="create-ingredient"),
     path("delete-ingredient/<int:ing_id>/", views.delete_ingredient, name="delete-ingredient"),

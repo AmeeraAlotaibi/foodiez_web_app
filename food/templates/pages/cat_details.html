@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="container w-100 mt-3 mb-3">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <h1 class="text-uppercase fw-bold">{{category.name}}</h1>
+        
+        <ul class="list-group">
+            {% for ing in category.ingredients.all %}
+            <li class="list-item">{{ing.name}}</li>
+            {% endfor %}
+        </ul>
+        
+
+    </div>
+</div>
+{% endblock content %}

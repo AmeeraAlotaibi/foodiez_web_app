@@ -119,7 +119,7 @@
     <!-- flexbox row wrap for displaying all categories -->
     <div class="d-flex flex-wrap ms-2 align-items-center">
       {% for cat in categories %}
-        <button class="btn btn-light px-2  fs-4 me-2 mb-2">{{cat.name}}</button>
+          <a href="{% url 'category-details' cat_id=cat.id %}" class="btn btn-light">{{cat.name}}</a>
       {% endfor %}
       <!-- to add a new category if user is logged in -->
       {% if request.user.is_authenticated %}
@@ -180,7 +180,7 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  onclick="get_difficulty()"
+                  onclick="get_difficulty(value)"
                   id="difficulty"
                   data-filter="difficulty"
                   value="easy"
@@ -279,20 +279,21 @@
 
 <!--  javascript script -->
 <script type="text/javascript">
-  
-  // category collapse function
 
 
-
-  function get_difficulty() {
+  function get_difficulty(data) {
     $.ajax({
       type: "GET",
-      url: '{% url "filter-recipes" %}',
+      url: "{% url 'filter-recipes' %}",
       error: function () {
         console.log("error");
+        console.log(data);
+
       },
       success: function (data) {
+        console.log(data);
         $("#difficulty").text(data.recipes);
+        console.log("hello")
       },
     });
   }
