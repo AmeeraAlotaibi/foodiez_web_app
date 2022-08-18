@@ -88,11 +88,14 @@
           >
             {{ recipe.description }}
           </p>
-          <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-between align-items-end">
             <!-- category -->
-            <span class="badge text-bg-light px-3 py-2"
-              >{{ recipe.category }}</span
-            >
+            <div class="d-flex flex-wrap">
+              {% for category in recipe.category.all %}
+              <span class="badge text-bg-light px-2 py-2 me-1 mb-1">{{ category.name }}</span>
+              {% endfor %}
+            </div>
+          
             <!-- read more button -->
             <a
               href="{% url 'recipe-detail' recipe_id=recipe.id %}"
@@ -116,14 +119,7 @@
     <!-- flexbox row wrap for displaying all categories -->
     <div class="d-flex flex-wrap ms-2 align-items-center">
       {% for cat in categories %}
-      <div
-        href="#"
-        type="link"
-        class="btn btn-light d-flex justify-content-between align-items-center py-1 ps-3 mb-2 me-2"
-      >
-        <p class="fs-4 me-3 my-0">{{ cat.name }}</p>
-        <p class="m-0"></p>
-      </div>
+        <button class="btn btn-light px-2  fs-4 me-2 mb-2">{{cat.name}}</button>
       {% endfor %}
       <!-- to add a new category if user is logged in -->
       {% if request.user.is_authenticated %}
@@ -273,7 +269,7 @@
       </div>
       <div class="col-md-10 p-0 m-0">
         <!-- recipes container -->
-        {% include 'ajax/recipes_list.html' %}
+        {% include 'snippets/recipes_list.html' %}
       </div>
     </div>
     <!--  end of list of recipes -->
@@ -283,6 +279,11 @@
 
 <!--  javascript script -->
 <script type="text/javascript">
+  
+  // category collapse function
+
+
+
   function get_difficulty() {
     $.ajax({
       type: "GET",

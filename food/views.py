@@ -140,6 +140,14 @@ def create_category(request):
     return render(request, 'snippets/add_cat.html', context)
 
 
+def category_details(request, cat_id):
+    category = Category.objects.get(id=cat_id)
+    context = {
+        "category": category,
+    }
+    return render(request, "cat_details.html", context)
+
+
 # DELEETE CATEGORY
 def delete_category(request, cat_id):
     cat = Category.objects.get(id=cat_id)
@@ -185,7 +193,7 @@ def filter_recipes(request):
     recipes = list(Recipe.objects.filter(difficulty__exact="Easy"))
     print(type(recipes))
     data = {
-        "filter": model_to_dict(recipes[0]),
+        "filter": recipes,
     }
     print(data)
     # return JsonResponse(data)
