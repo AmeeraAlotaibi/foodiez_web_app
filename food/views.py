@@ -5,7 +5,7 @@ from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from .models import Category, Ingredient, Recipe
 from .forms import CategoryForm, IngredientForm, RecipeForm, RegisterForm, LoginForm
-from django.forms.models import model_to_dict
+from django.forms import formset_factory
 
 
 # registeration view
@@ -72,7 +72,6 @@ def home_view(request):
 # CREATING A RECIPE VIEW
 def create_recipe_view(request):
     form = RecipeForm()
-    
     if request.method == "POST":
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
@@ -85,7 +84,6 @@ def create_recipe_view(request):
                 return redirect("home")
             else: 
                 return redirect("forbidden")
-    
     context = {
         "form": form,
     }
@@ -145,7 +143,7 @@ def category_details(request, cat_id):
     context = {
         "category": category,
     }
-    return render(request, "cat_details.html", context)
+    return render(request, "pages/cat_details.html", context)
 
 
 # DELEETE CATEGORY
@@ -190,11 +188,16 @@ def admin_view(request):
 
 # filter recipes
 def filter_recipes(request):
-    recipes = list(Recipe.objects.filter(difficulty__exact="Easy"))
-    print(type(recipes))
+    recipes = Recipe.objects.filter(difficulty__exact="Easy").values_list("name",flat=True)
+    # print(type(recipes))
     data = {
-        "filter": recipes,
+        "filter": list(recipes),
     }
-    print(data)
-    # return JsonResponse(data)
-    return HttpResponse("data")
+    # print(data)
+    return JsonResponse(data, safe=False)
+    # return HttpResponse("data")
+
+
+# def formset_view(request):
+#     RecipeFormSet = formset_factory(RecipeForm)
+#     formset = RecipeFormSet()
