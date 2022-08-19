@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
-from django.db.models import Q
 from django.contrib.auth import login, authenticate, logout
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .models import Category, Ingredient, Recipe
 from .forms import CategoryForm, IngredientForm, RecipeForm, RegisterForm, LoginForm
-from django.forms import formset_factory
 
 
 # registeration view
@@ -32,7 +30,6 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
-            
             auth_user = authenticate(username=username, password=password)
             if auth_user is not None:
                 login(request, auth_user)
@@ -93,7 +90,6 @@ def create_recipe_view(request):
 # RECIPE DETAIL VIEW
 def recipe_detail_view(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
-   
     context = {
         "recipe": recipe,
     }
@@ -162,7 +158,6 @@ def create_ingredient(request):
         if form.is_valid():
             form.save()
             return redirect("home") 
-    
     context = {
         "form": form
     }
@@ -176,7 +171,7 @@ def delete_ingredient(request, ing_id):
     return redirect("admin-page")
 
 
-# Admin page view - will adjust later 
+# ADMIN PAGE
 def admin_view(request):
     categories = Category.objects.all()
     ingredients = Ingredient.objects.all()
@@ -195,17 +190,14 @@ def filter_recipes(request):
     ingredients = request.GET.getlist("ingredient[]")
     levels = request.GET.getlist("difficulty[]")
 
-    
     if len(categories) > 0:
         all_recipes = all_recipes.filter(category__id__in=categories)
     if len(ingredients) > 0:
         all_recipes = all_recipes.filter(ingredients__id__in=ingredients)
     if len(levels) > 0:
         all_recipes = all_recipes.filter(difficulty__in=levels)
-
     
     filter_template = render_to_string('ajax/recipes_list.html', {"data": all_recipes})
-
     return JsonResponse({"data": filter_template})
 
 
