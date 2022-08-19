@@ -1,4 +1,5 @@
 from datetime import timedelta
+from distutils.command.upload import upload
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -9,6 +10,7 @@ User = get_user_model()
     
 class Ingredient(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    image = models.ImageField(upload_to="ingredients/", default="static/placeholdering.png")
     
     def __str__(self) -> str:
         return self.name

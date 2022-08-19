@@ -3,7 +3,7 @@
 {% bootstrap_javascript jquery='full' %}
 <div class="modal fade" id="ing" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ingLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="{% url 'create-ingredient' %}" method="post" class="form">
+        <form action="{% url 'create-ingredient' %}" method="post" class="form" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">

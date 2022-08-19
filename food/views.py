@@ -51,7 +51,7 @@ def logout_view(request):
 
 # home page view 
 def home_view(request):
-    recipes = Recipe.objects.all()
+    recipes = Recipe.objects.all().order_by("-id")
     editors_pick = Recipe.objects.filter(editor_pick=True)
     categories = Category.objects.all()
     ingredients = Ingredient.objects.all()
@@ -138,6 +138,7 @@ def create_category(request):
     return render(request, 'snippets/add_cat.html', context)
 
 
+# CATEGORY DETAILS
 def category_details(request, cat_id):
     category = Category.objects.get(id=cat_id)
     context = {
@@ -152,11 +153,12 @@ def delete_category(request, cat_id):
     cat.delete()
     return redirect("admin-page")
 
+
 # ADD INGREDIENT
 def create_ingredient(request):
     form = IngredientForm()
     if request.method == "POST":
-        form = IngredientForm(request.POST)
+        form = IngredientForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("home") 
@@ -186,18 +188,25 @@ def admin_view(request):
 
 
 
-# filter recipes
+# FILTER RECIPES
 def filter_recipes(request):
-    recipes = Recipe.objects.filter(difficulty__exact="Easy").values_list("name",flat=True)
-    # print(type(recipes))
-    data = {
-        "filter": list(recipes),
-    }
-    # print(data)
-    return JsonResponse(data, safe=False)
-    # return HttpResponse("data")
+    all_recipes = Recipe.objects.all().order_by("-id")
+    categories = request.GET.getlist("category[]")
+    ingredients = request.GET.getlist("ingredient[]")
+    levels = request.GET.getlist("difficulty[]")
+
+    
+    if len(categories) > 0:
+        all_recipes = all_recipes.filter(category__id__in=categories)
+    if len(ingredients) > 0:
+        all_recipes = all_recipes.filter(ingredients__id__in=ingredients)
+    if len(levels) > 0:
+        all_recipes = all_recipes.filter(difficulty__in=levels)
+
+    
+    filter_template = render_to_string('ajax/recipes_list.html', {"data": all_recipes})
+
+    return JsonResponse({"data": filter_template})
 
 
-# def formset_view(request):
-#     RecipeFormSet = formset_factory(RecipeForm)
-#     formset = RecipeFormSet()
+

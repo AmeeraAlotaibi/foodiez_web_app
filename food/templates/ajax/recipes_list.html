@@ -1,5 +1,6 @@
-{% load bootstrap4 %}
-{% for recipe in recipes %}
+<div class="row ms-3">
+    {% for recipe in data %}
+    <div class="col-auto p-0 m-0">  
     <!-- recipe card -->
     <div class="card me-3 mb-3" style="width: 17rem; height: max-content;">
         <center style="background-color: rgb(247, 247, 247);">
@@ -46,4 +47,6 @@
         </div>
     </div>
     <!-- end of recipe card -->
+</div>
     {% endfor %}
+</div>
